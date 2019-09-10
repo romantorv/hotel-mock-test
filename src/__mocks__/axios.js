@@ -4,4 +4,4 @@ const axios = {
 	})
 };
 
-export default axios;
+module.exports = axios;
