@@ -1,0 +1,33 @@
+{
+  "name": "hotel-services-sample",
+  "version": "0.1.0",
+  "description": "A sample script for data merging.",
+  "main": "index.js",
+  "author": "Bach Quang Vinh",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --coverage",
+    "test:verbose": "jest --verbose"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "jest-extended": "^0.11.2"
+  },
+  "engines": {
+    "node": "^8.12.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "globals": {
+      "window": {}
+    }
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "config": "^3.2.2",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1"
+  }
+}
