@@ -38,7 +38,7 @@ function transformData(source){
 				address: item.location.address,
 				country: item.location.country,
 			},
-			description: item.details,
+			description: item.details ? [item.details] : null,
 			amenities: item.amenities,
 			images: item.images,
 			booking_conditions: item.booking_conditions

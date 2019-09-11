@@ -39,7 +39,7 @@ function transformData(source){
 				lng: item.lng,
 				address: item.address
 			},
-			description: item.info,
+			description: item.info ? [item.info] : null,
 			amenities: item.amenities ? {
 				general: item.amenities
 			} : null,

@@ -1,6 +1,8 @@
 const mockAxios = require('../../__mocks__/axios');
 const transpilers = require('../index');
 
+// for actual case, we can place all files into a folder for source sample 
+// and loading with the same name of "source" name.
 
 const input__a = [
 	{
@@ -45,7 +47,6 @@ const input__a = [
 		]
 	}
 ];
-
 
 const input__b = [
 	{
@@ -246,14 +247,14 @@ const output__a = [
 			"countryCode": "SG",
 			"postal": "098269",
         },
-        "description": "This 5 star hotel is located on the coastline of Singapore.",
+        "description": ["This 5 star hotel is located on the coastline of Singapore."],
         "amenities": {
             "general": [
-                "Pool",
-				"BusinessCenter",
-				"WiFi ",
-				"DryCleaning",
-				" Breakfast"
+                "pool",
+				"businesscenter",
+				"wifi",
+				"drycleaning",
+				"breakfast"
             ]
         },
         "images": null,
@@ -272,17 +273,17 @@ const output__a = [
 			"countryCode": "SG",
 			"postal": "238909",
         },
-        "description": "Enjoy sophisticated waterfront living at the new InterContinental® Singapore Robertson Quay, luxury's preferred address nestled in the heart of Robertson Quay along the Singapore River, with the CBD just five minutes drive away. Magnifying the comforts of home, each of our 225 studios and suites features a host of thoughtful amenities that combine modernity with elegance, whilst maintaining functional practicality. The hotel also features a chic, luxurious Club InterContinental Lounge.",
+        "description": ["Enjoy sophisticated waterfront living at the new InterContinental® Singapore Robertson Quay, luxury's preferred address nestled in the heart of Robertson Quay along the Singapore River, with the CBD just five minutes drive away. Magnifying the comforts of home, each of our 225 studios and suites features a host of thoughtful amenities that combine modernity with elegance, whilst maintaining functional practicality. The hotel also features a chic, luxurious Club InterContinental Lounge."],
         "amenities": {
             "general": [
-                "Pool",
-				"WiFi ",
-				"Aircon",
-				"BusinessCenter",
-				"BathTub",
-				"Breakfast",
-				"DryCleaning",
-				"Bar"
+                "pool",
+				"wifi",
+				"aircon",
+				"businesscenter",
+				"bathtub",
+				"breakfast",
+				"drycleaning",
+				"bar"
             ]
         },
         "images": null,
@@ -304,7 +305,7 @@ const output__b = [
 			"countryCode": null,
 			"postal": null,
         },
-        "description": "Surrounded by tropical gardens, these upscale villas in elegant Colonial-style buildings are part of the Resorts World Sentosa complex and a 2-minute walk from the Waterfront train station. Featuring sundecks and pool, garden or sea views, the plush 1- to 3-bedroom villas offer free Wi-Fi and flat-screens, as well as free-standing baths, minibars, and tea and coffeemaking facilities. Upgraded villas add private pools, fridges and microwaves; some have wine cellars. A 4-bedroom unit offers a kitchen and a living room. There's 24-hour room and butler service. Amenities include posh restaurant, plus an outdoor pool, a hot tub, and free parking.",
+        "description": ["Surrounded by tropical gardens, these upscale villas in elegant Colonial-style buildings are part of the Resorts World Sentosa complex and a 2-minute walk from the Waterfront train station. Featuring sundecks and pool, garden or sea views, the plush 1- to 3-bedroom villas offer free Wi-Fi and flat-screens, as well as free-standing baths, minibars, and tea and coffeemaking facilities. Upgraded villas add private pools, fridges and microwaves; some have wine cellars. A 4-bedroom unit offers a kitchen and a living room. There's 24-hour room and butler service. Amenities include posh restaurant, plus an outdoor pool, a hot tub, and free parking."],
         "amenities": {
             "general": [
                 "outdoor pool",
@@ -359,7 +360,7 @@ const output__b = [
 			"countryCode": null,
 			"postal": null,
         },
-        "description": "InterContinental Singapore Robertson Quay is luxury's preferred address offering stylishly cosmopolitan riverside living for discerning travelers to Singapore. Prominently situated along the Singapore River, the 225-room inspiring luxury hotel is easily accessible to the Marina Bay Financial District, Central Business District, Orchard Road and Singapore Changi International Airport, all located a short drive away. The hotel features the latest in Club InterContinental design and service experience, and five dining options including Publico, an Italian landmark dining and entertainment destination by the waterfront.",
+        "description": ["InterContinental Singapore Robertson Quay is luxury's preferred address offering stylishly cosmopolitan riverside living for discerning travelers to Singapore. Prominently situated along the Singapore River, the 225-room inspiring luxury hotel is easily accessible to the Marina Bay Financial District, Central Business District, Orchard Road and Singapore Changi International Airport, all located a short drive away. The hotel features the latest in Club InterContinental design and service experience, and five dining options including Publico, an Italian landmark dining and entertainment destination by the waterfront."],
         "amenities": {
             "general": [
                 "outdoor pool",
@@ -428,16 +429,16 @@ const output__c = [
 			"countryCode": null,
 			"postal": null,
         },
-        "description": "Located at the western tip of Resorts World Sentosa, guests at the Beach Villas are guaranteed privacy while they enjoy spectacular views of glittering waters. Guests will find themselves in paradise with this series of exquisite tropical sanctuaries, making it the perfect setting for an idyllic retreat. Within each villa, guests will discover living areas and bedrooms that open out to mini gardens, private timber sundecks and verandahs elegantly framing either lush greenery or an expanse of sea. Guests are assured of a superior slumber with goose feather pillows and luxe mattresses paired with 400 thread count Egyptian cotton bed linen, tastefully paired with a full complement of luxurious in-room amenities and bathrooms boasting rain showers and free-standing tubs coupled with an exclusive array of ESPA amenities and toiletries. Guests also get to enjoy complimentary day access to the facilities at Asia’s flagship spa – the world-renowned ESPA.",
+        "description": ["Located at the western tip of Resorts World Sentosa, guests at the Beach Villas are guaranteed privacy while they enjoy spectacular views of glittering waters. Guests will find themselves in paradise with this series of exquisite tropical sanctuaries, making it the perfect setting for an idyllic retreat. Within each villa, guests will discover living areas and bedrooms that open out to mini gardens, private timber sundecks and verandahs elegantly framing either lush greenery or an expanse of sea. Guests are assured of a superior slumber with goose feather pillows and luxe mattresses paired with 400 thread count Egyptian cotton bed linen, tastefully paired with a full complement of luxurious in-room amenities and bathrooms boasting rain showers and free-standing tubs coupled with an exclusive array of ESPA amenities and toiletries. Guests also get to enjoy complimentary day access to the facilities at Asia’s flagship spa – the world-renowned ESPA."],
         "amenities": {
             "general": [
-                "Aircon",
-				"Tv",
-				"Coffee machine",
-				"Kettle",
-				"Hair dryer",
-				"Iron",
-				"Tub"
+                "aircon",
+				"tv",
+				"coffee machine",
+				"kettle",
+				"hair dryer",
+				"iron",
+				"tub"
             ],    
         },
         "images": {

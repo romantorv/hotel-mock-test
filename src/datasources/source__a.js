@@ -42,7 +42,7 @@ function transformData(source){
 				countryCode: item.Country,
 				postal: item.PostalCode
 			},
-			description: item.Description,
+			description: item.Description ? [item.Description] : null,
 			amenities: item.Facilities ? {
 				general: item.Facilities
 			} : null,

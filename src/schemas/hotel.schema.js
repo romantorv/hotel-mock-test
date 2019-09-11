@@ -13,9 +13,22 @@ const schema = Joi.object({
 		countryCode: Joi.string().optional().length(2).default(null),
 		postal: Joi.string().optional().default(null),
 	}).required(),
-	description: Joi.string().trim().allow(null).default(null),
-	amenities: Joi.any().default(null),
-	images: Joi.any().default(null),
+	description: Joi.array()
+		.items( Joi.string().trim() )
+		.allow(null)
+		.default(null),
+	amenities: Joi.object()
+		.pattern(/./, Joi.array().items( Joi.string().trim().lowercase() ))
+		.allow(null)
+		.default(null),
+	images: Joi.object()
+		.pattern(/./, Joi.array().items(
+			Joi.object().keys({
+				url: Joi.string(),
+			})
+			.unknown(true)
+		))
+		.default(null),
 	booking_conditions: Joi.array().items( Joi.string().trim() ).default(null)
 }).unknown(true);
 
