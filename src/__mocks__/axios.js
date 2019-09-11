@@ -1,7 +1,5 @@
 const axios = {
-	get: jest.fn(() => {
-		return Promise.resolve({ data: {} });
-	})
+	get: jest.fn(() => Promise.resolve({ data: {} }))
 };
 
 module.exports = axios;
