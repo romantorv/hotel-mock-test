@@ -5,6 +5,31 @@ const sourceAPI = 'https://api.myjson.com/bins/gdmqa';
 const resultSchema = require('../schemas/hotel.schema');
 //
 
+async function getHotels({ids=null, locationId=null}){
+	try {
+		const response = await axios.get(sourceAPI);
+		const listOfIds = ids ? ids.split(',') : [];
+		// instead of using recursive loop for all params, 
+		// we are using exact params name to optimizing the calculation
+		// this method is applicable to simple query
+		let foundItems = response.data.filter( item => {
+			if ( listOfIds.length > 0 && locationId ){
+				return item['DestinationId'].toString() === String(locationId) && listOfIds.indexOf(item['Id']) >= 0;
+			} else if ( listOfIds.length > 0 && !locationId ){
+				return listOfIds.indexOf(item['Id']) >= 0;
+			} else if ( listOfIds.length === 0 && locationId ){
+				return item['DestinationId'].toString() === String(locationId);
+			} else {
+				return false;
+			}
+		});
+		
+		return transformData(foundItems);
+	} catch (error) {
+		
+	}
+}
+
 async function getHotelById(ids){
 	try {
 		const response = await axios.get(sourceAPI);
@@ -32,8 +57,8 @@ function transformData(source){
 	try {
 		const transformedSource = source.map( item => ({
 			id: item.Id,
-			destination_id: item.DestinationId,
-			name: item.Name,
+			destination_id: item.DestinationId, // only primary datasource will contain key attributes
+			name: item.Name, // only primary datasource will contain key attributes
 			location: {
 				lat: item.Latitude,
 				lng: item.Longitude,
@@ -62,6 +87,7 @@ function transformData(source){
 }
 
 module.exports = {
+	getHotels,
 	getHotelById,
 	getHotelByLocation
 };

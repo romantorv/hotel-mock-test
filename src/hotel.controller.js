@@ -1,61 +1,61 @@
 const datasources = require('./datasources');
 
-function mergeData(sources = []){
+function isObject(target){
+	return target !== null && typeof target ==='object' && !Array.isArray(target);
+}
 
+function objectMerge(target, ...sources){
+	// verified if there is not compare source
+	if ( typeof sources === 'undefined' || sources.length === 0) return target;
+	//
+	const currentSource = sources.shift();
+	if ( isObject(target) && isObject(currentSource) ){
+		Object.keys( currentSource ).map( keyName => {
+			if ( Array.isArray(currentSource[keyName]) ){
+				if ( !target[keyName]) target[keyName] = [];
+				let joinedArray = target[keyName].concat( currentSource[keyName] );
+				target[keyName] = [...new Set(joinedArray)];
+			} else if ( isObject(currentSource[keyName]) ){
+				if ( !target[keyName] ) Object.assign( target, { [keyName]: {} });
+				objectMerge( target[keyName], currentSource[keyName] );
+			} else if (currentSource[keyName] !== null ) {
+				Object.assign(target, { [keyName]: currentSource[keyName] } );
+			}
+		})
+	}
+	return objectMerge(target, ...sources);
+}
+
+function mergeData(sources = []){
 	let mergedObject = sources.reduce( (result, source) => {
 		source.map( hotel => {
-			// initital the first records
-			console.log('hotel', hotel);
-			if ( typeof result[hotel.id] !== 'undefined' ) {
+			// initital the first records			
+			if ( typeof result[hotel.id] === 'undefined' ) {
 				result[hotel.id] = hotel;
 			} else {
 			// merging new content into existing hotel
-				Object.keys(hotel).map( keyName => {
-					if ( hotel[keyName] && keyName !== 'id' && keyName !== 'destination_id' ) { //????
-						if ( Array.isArray(hotel[keyName]) ) {
-							let newValue = [].concat(result[hotel.id][keyName], hotel[keyName]);
-							result[hotel.id][keyName] = newValue;
-						} else if ( typeof hotel[keyName] === 'object ') {
-							let newValue = Object.assign(
-								{},
-								...result[hotel.id][keyName],
-								...hotel[keyName]
-							)
-							result[hotel.id][keyName] = newValue;
-						} else {
-							result[hotel.id][keyName] = hotel[keyName];
-						}
-					}
-				})
+				let newResult = objectMerge({}, result[hotel.id], hotel);
+				result[hotel.id] = newResult;
 			}
-			return result;
 		});
+		return result;
 	}, {});
-	// return {
-	// 	id,
-	// 	destination_id,
-	// 	name,
-	// 	location,
-	// 	description,
-	// 	amenities,
-	// 	images,
-	// 	booking_conditions
-	// }
-
-	return Object.keys(mergedObject).reduce( (result, record) => {
-		result.push( record );
+	
+	return Object.keys(mergedObject).reduce( (result, nameId) => {
+		result.push( mergedObject[nameId] );
 		return result;
 	}, []);
 }
 
-function getHotelById(ids){
-	return [];
-}
+async function getHotels({ids, locationId, pageNo=1, pageSize=10 }){
+	const result = await Promise.all(
+		datasources.schemas.map( async(sourceName) => datasources[sourceName].getHotels({ids, locationId}) )
+	);
 
-function getHotelByDestitation(destinationId){
-	return [];
+	return mergeData(result);
 }
 
 module.exports = {
-	mergeData
+	mergeData,
+	getHotels,
 }

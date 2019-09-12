@@ -324,18 +324,18 @@ const output__b = [
         "images": {
 			"rooms": [
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/2.jpg",
-                    "caption": "Double room"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/2.jpg",
+                    "description": "Double room"
                 },
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/3.jpg",
-                    "caption": "Double room"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/3.jpg",
+                    "description": "Double room"
                 }
             ],
             "site": [
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/1.jpg",
-                    "caption": "Front"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/1.jpg",
+                    "description": "Front"
                 }
             ]
 		},
@@ -384,30 +384,30 @@ const output__b = [
         "images": {
             "rooms": [
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i93_m.jpg",
-                    "caption": "Double room"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i93_m.jpg",
+                    "description": "Double room"
                 },
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i94_m.jpg",
-                    "caption": "Bathroom"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i94_m.jpg",
+                    "description": "Bathroom"
                 }
             ],
             "site": [
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i1_m.jpg",
-                    "caption": "Restaurant"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i1_m.jpg",
+                    "description": "Restaurant"
                 },
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i2_m.jpg",
-                    "caption": "Hotel Exterior"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i2_m.jpg",
+                    "description": "Hotel Exterior"
                 },
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i5_m.jpg",
-                    "caption": "Entrance"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i5_m.jpg",
+                    "description": "Entrance"
                 },
                 {
-                    "link": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i24_m.jpg",
-                    "caption": "Bar"
+                    "url": "https://d2ey9sqrvkqdfs.cloudfront.net/Sjym/i24_m.jpg",
+                    "description": "Bar"
                 }
             ]
         },
@@ -519,19 +519,74 @@ describe('Checking transpilers', () => {
 	describe.each( transpilers.schemas )(
 		'Checking transpiler name "%s"',
 		(schemaName) => {
-			describe('checking getHotelById method', () => {
+            describe('checking getHotels method and return hotels tidy format', () => {
+                beforeEach( () => {
+					mockAxios.get.mockImplementation( () => Promise.resolve({ data: inputs[schemaName] }));
+                });
+                it('single Id and no location', async () => {
+					const result = await transpilers[schemaName].getHotels({ids:'iJhz'});
+					expect(result).toHaveLength(1);
+					expect(result).toEqual(
+						expect.arrayContaining([ outputs[schemaName][0] ])
+					)
+                });
+                it('multiple Id and no location', async () => {
+					const result = await transpilers[schemaName].getHotels({ids:'iJhz,SjyX'});
+					expect(result).toHaveLength(2);
+					expect(result).toEqual(
+						expect.arrayContaining(outputs[schemaName])
+					)
+                });
+                it('valid Id and invalid Id and no location', async () => {
+					const result = await transpilers[schemaName].getHotels({ids:'iJhz,SjyX__'});
+					expect(result).toHaveLength(1);
+					expect(result).toEqual(
+						expect.arrayContaining([outputs[schemaName][0]])
+					)
+                });
+                it('no Id and valid locationId', async () => {
+					const result = await transpilers[schemaName].getHotels({locationId:'5432'});
+					expect(result).toHaveLength(2);
+					expect(result).toEqual(
+						expect.arrayContaining(outputs[schemaName])
+					)
+                });
+                it('single valid Id and valid locationId', async () => {
+					const result = await transpilers[schemaName].getHotels({ids:'iJhz', locationId:'5432'});
+					expect(result).toHaveLength(1);
+					expect(result).toEqual(
+						expect.arrayContaining([ outputs[schemaName][0] ])
+					)
+                });
+                it('multiple valid Id and valid locationId', async () => {
+					const result = await transpilers[schemaName].getHotels({ids:'iJhz,SjyX', locationId:'5432'});
+					expect(result).toHaveLength(2);
+					expect(result).toEqual(
+						expect.arrayContaining( outputs[schemaName] )
+					)
+                });
+                it('valid Id and invalid locationId', async () => {
+					const result = await transpilers[schemaName].getHotels({ids:'iJhz', locationId:'54321'});
+					expect(result).toHaveLength(0);
+                });
+                it('valid Id, invalid Id and invalid locationId', async () => {
+					const result = await transpilers[schemaName].getHotels({ids:'iJhz,SjyX__', locationId:'54321'});
+					expect(result).toHaveLength(0);
+                });
+            });
+			describe('checking getHotelById method and return hotel record in tidy format', () => {
 				beforeEach( () => {
 					mockAxios.get.mockImplementation( () => Promise.resolve({ data: inputs[schemaName] }));
 				});
 
-				it('return hotel record in tidy format - single ID', async () => {
+				it('single ID', async () => {
 					const result = await transpilers[schemaName].getHotelById('iJhz');
 					expect(result).toHaveLength(1);
 					expect(result).toEqual(
 						expect.arrayContaining([ outputs[schemaName][0] ])
 					)
 				});
-				it('return hotel record in tidy format - multiple IDs', async() => {
+				it('multiple IDs', async() => {
 					const result = await transpilers[schemaName].getHotelById('iJhz,SjyX');
 					expect(result).toHaveLength(2);
 					expect(result).toEqual(
@@ -544,15 +599,15 @@ describe('Checking transpilers', () => {
 				});
 			});
 
-			describe('checking getHotelByLocation method', () => {
-				it('return hotel record in tidy format', async () => {
+			describe('checking getHotelByLocation method and return hotels record in tidy format', () => {
+				it('valid location', async () => {
 					const result = await transpilers[schemaName].getHotelByLocation('5432');
 					expect(result).toHaveLength(2);
 					expect(result).toEqual(
 						expect.arrayContaining(outputs[schemaName])
 					)
 				});
-				it('return no record with wrong location ID', async () => {
+				it('invalid location', async () => {
 					const result = await transpilers[schemaName].getHotelByLocation('0');
 					expect(result).toHaveLength(0);
 				});

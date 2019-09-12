@@ -2,8 +2,8 @@ const Joi = require('joi');
 
 const schema = Joi.object({
 	id: Joi.string().required(),
-	destination_id: Joi.number().integer().required(),
-	name: Joi.string().trim().required(),
+	destination_id: Joi.number().integer().allow(null).default(null),
+	name: Joi.string().trim().allow(null).default(null),
 	location: Joi.object().keys({
 		lat: Joi.number().allow(null).default(null),
 		lng: Joi.number().allow(null).default(null),
@@ -23,10 +23,16 @@ const schema = Joi.object({
 		.default(null),
 	images: Joi.object()
 		.pattern(/./, Joi.array().items(
-			Joi.object().keys({
-				url: Joi.string(),
-			})
-			.unknown(true)
+			Joi.alternatives(
+				Joi.object().keys({
+					url: Joi.string(),
+					description: Joi.string()
+				}), // default type
+				Joi.object().keys({
+					link: Joi.string(),
+					caption: Joi.string()
+				}).rename('caption', 'description').rename('link', 'url').unknown(true)
+			)
 		))
 		.default(null),
 	booking_conditions: Joi.array().items( Joi.string().trim() ).default(null)

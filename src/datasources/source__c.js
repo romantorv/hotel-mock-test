@@ -4,6 +4,30 @@ const axios = require('axios');
 const sourceAPI = 'https://api.myjson.com/bins/j6kzm"';
 const resultSchema = require('../schemas/hotel.schema');
 //
+async function getHotels({ids=null, locationId=null}){
+	try {
+		const response = await axios.get(sourceAPI);
+		const listOfIds = ids ? ids.split(',') : [];
+
+		// instead of using recursive loop for all params, 
+		// we are using exact params name to optimizing the calculation
+		// this method is applicable to simple query
+		let foundItems = response.data.filter( item => {
+			if ( listOfIds.length > 0 && locationId ){
+				return item['destination'].toString() === String(locationId) && listOfIds.indexOf(item['id']) >= 0;
+			} else if ( listOfIds.length > 0 && !locationId ){
+				return listOfIds.indexOf(item['id']) >= 0;
+			} else if ( listOfIds.length === 0 && locationId ){
+				return item['destination'].toString() === String(locationId);
+			} else {
+				return false;
+			}
+		});
+		return transformData(foundItems);
+	} catch (error) {
+		
+	}
+}
 
 async function getHotelById(ids){
 	try {
@@ -60,6 +84,7 @@ function transformData(source){
 }
 
 module.exports = {
+	getHotels,
 	getHotelById,
 	getHotelByLocation
 };
