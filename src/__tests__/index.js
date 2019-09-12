@@ -17,20 +17,13 @@ const datasources = [
 		name: "Type 3",
 	},
 ];
-/*
-describe('Checking all datasource in right format', () => {
-	datasources.map( source => {
-		describe(`${source.name} at ${source.url}`, () => {
-			it('loading sucessfully source', () => {
-				expect(response.status).toBe(200)
-			})
-			it('having right schema as configuration', () => {
-				expect( joi.validate(response.data).error ).toBeNull();
-			})
-		})
-	})
-});
+describe('Checking accepted request and tidy result schema', () => {
+	it('GET method without param', () => {
+		//compare test case		
+	});
+})
 
+/*
 describe('Checking accepted request and tidy result schema', () => {
 	it('GET method without param', () => {
 		// let result = joi.validate( response.data, hotelListSchema);

@@ -7,8 +7,9 @@ const resultSchema = require('../schemas/hotel.schema');
 async function getHotels({ids=null, locationId=null}){
 	try {
 		const response = await axios.get(sourceAPI);
+		if ( !ids && !locationId ) return transformData(response.data);
+		//
 		const listOfIds = ids ? ids.split(',') : [];
-
 		// instead of using recursive loop for all params, 
 		// we are using exact params name to optimizing the calculation
 		// this method is applicable to simple query

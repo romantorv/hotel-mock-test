@@ -1,4 +1,7 @@
+const Joi = require('joi');
+
 const datasources = require('./datasources');
+const hotelSchema = require('./schemas/hotel.schema');
 
 function isObject(target){
 	return target !== null && typeof target ==='object' && !Array.isArray(target);
@@ -47,12 +50,13 @@ function mergeData(sources = []){
 	}, []);
 }
 
-async function getHotels({ids, locationId, pageNo=1, pageSize=10 }){
+async function getHotels({ids=null, locationId=null, pageNo=1, pageSize=10 }){
 	const result = await Promise.all(
 		datasources.schemas.map( async(sourceName) => datasources[sourceName].getHotels({ids, locationId}) )
 	);
-
-	return mergeData(result);
+	const hotelListSchema = Joi.array().items( hotelSchema );
+	let {error, value} = Joi.validate( mergeData(result), hotelListSchema);
+	return value;
 }
 
 module.exports = {

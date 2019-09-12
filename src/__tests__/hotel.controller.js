@@ -342,6 +342,16 @@ describe('Checking hotel controller', () => {
 			mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: input__b }));
 			mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: input__c }));
 		});
+		it('no hotel and location', async () => {
+			const result = await hotelController.getHotels({});
+			expect(result).toHaveLength(2);
+			expect(result).toEqual(
+				expect.arrayContaining([output[0]])
+			)
+			expect(result).toEqual(
+				expect.arrayContaining([output[1]])
+			)
+		});
 		it('single valid hotel id and no location', async () => {
 			const result = await hotelController.getHotels({
 				ids: 'iJhz'

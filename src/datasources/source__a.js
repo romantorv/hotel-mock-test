@@ -8,6 +8,9 @@ const resultSchema = require('../schemas/hotel.schema');
 async function getHotels({ids=null, locationId=null}){
 	try {
 		const response = await axios.get(sourceAPI);
+		//
+		if ( !ids && !locationId ) return transformData(response.data);
+		//
 		const listOfIds = ids ? ids.split(',') : [];
 		// instead of using recursive loop for all params, 
 		// we are using exact params name to optimizing the calculation
@@ -60,12 +63,12 @@ function transformData(source){
 			destination_id: item.DestinationId, // only primary datasource will contain key attributes
 			name: item.Name, // only primary datasource will contain key attributes
 			location: {
-				lat: item.Latitude,
-				lng: item.Longitude,
-				address: item.Address,
-				city: item.City,
-				countryCode: item.Country,
-				postal: item.PostalCode
+				lat: item.Latitude ? item.Latitude : null,
+				lng: item.Longitude ? item.Longitude : null,
+				address: item.Address ? item.Address : null,
+				city: item.City ? item.City : null,
+				countryCode: item.Country ? item.Country : null,
+				postal: item.PostalCode ? item.PostalCode : null
 			},
 			description: item.Description ? [item.Description] : null,
 			amenities: item.Facilities ? {
