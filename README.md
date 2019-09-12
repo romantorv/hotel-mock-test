@@ -15,6 +15,13 @@ yarn start
 By default the port for using this service is 8080, you can change it in different branches: "sit", "staging", "production" for different purpose.
 After running, we will see the successfully message "Server ready at 8080"
 
+- For query, we only accept GET method from below end-point:
+```
+http://<host>:8080/hotels 
+http://<host>:8080/hotels?id=iJhz,SjyX
+http://<host>:8080/hotels?location=5432
+http://<host>:8080/hotels?id=iJhz,SjyX&location=5432
+```
 - For running services while development for auto reload
 ```
 yarn dev
@@ -42,7 +49,7 @@ I decide to break the transpilers into different name that matched the source na
 
 I let the merging process into a standalone node so that we can preparing the auto-scale feature for it.
 
-[picture]
+[missing a picture]
 
 ##	2. Test Driven Development - TDD
 
