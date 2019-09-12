@@ -3,6 +3,28 @@
 This is a mock test for a hotel service, that return a tidy combined content between different sources.
 This project is developed for sharing the concept about how to structure a microservices architure application and code guideline.
 
+## How to use 
+Install dependencies and packages ( I use yarn instead of "npm" )
+```
+yarn install
+```
+- For running as a service 
+```
+yarn start
+```
+By default the port for using this service is 8080, you can change it in different branches: "sit", "staging", "production" for different purpose.
+After running, we will see the successfully message "Server ready at 8080"
+
+- For running services while development for auto reload
+```
+yarn dev
+```
+
+- For viewing test case while development with auto reload
+```
+yarn test:watch
+```
+
 ## Index
 
 1.	Concept and Design for perceptional structure
